@@ -1,0 +1,62 @@
+package application
+
+import (
+	"apiusuarios/src/usuarios/domain/entities"
+	"apiusuarios/src/usuarios/domain/repositories"
+)
+
+type GetUserByIDUseCase struct {
+	userRepository repositories.UserRepository
+}
+
+func NewGetUserByIDUseCase(userRepository repositories.UserRepository) *GetUserByIDUseCase {
+	return &GetUserByIDUseCase{
+		userRepository: userRepository,
+	}
+}
+
+func (uc *GetUserByIDUseCase) Execute(id string) (*entities.User, error) {
+	return uc.userRepository.GetUserByID(id)
+}
+
+
+
+package application
+
+import "apiusuarios/src/usuarios/domain/repositories"
+
+type DeleteUserIDUseCase struct {
+	userRepository repositories.UserRepository
+}
+
+func NewDeleteUserIDUseCase(userRepository repositories.UserRepository) *DeleteUserIDUseCase {
+	return &DeleteUserIDUseCase{
+		userRepository: userRepository,
+	}
+}
+
+func (uc *DeleteUserIDUseCase) Execute(id string) error {
+	return uc.userRepository.DeleteUserID(id)
+}
+
+
+package application
+
+import (
+	"apiusuarios/src/usuarios/domain/entities"
+	"apiusuarios/src/usuarios/domain/repositories"
+)
+
+type UpdateUserIDUseCase struct {
+	userRepository repositories.UserRepository
+}
+
+func NewUpdateUserIDUseCase(userRepository repositories.UserRepository) *UpdateUserIDUseCase {
+	return &UpdateUserIDUseCase{
+		userRepository: userRepository,
+	}
+}
+
+func (uc *UpdateUserIDUseCase) Execute(id string, data *entities.User) error {
+	return uc.userRepository.UpdateUserID(id, data)
+}
