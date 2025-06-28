@@ -12,6 +12,7 @@ import (
 func InitUser(r *gin.Engine) {
 	ps := mysql.NewMySql()
 	createUserHandler := application.NewCreateUserUseCase(ps)
-	UserController := controllers.NewUserController(createUserHandler)
+	loginUserHandler := application.NewLoginUserUseCase(ps)
+	UserController := controllers.NewUserController(createUserHandler, loginUserHandler)
 	routes.UserRoutes(r, UserController)
 }

@@ -10,5 +10,6 @@ func UserRoutes(r *gin.Engine, userService *controllers.UserController) {
 	usergroup := r.Group("/users")
 	{
 		usergroup.POST("/", userService.CreateUser)
+		usergroup.POST("/login", userService.LoginUser)
 	}
 }
