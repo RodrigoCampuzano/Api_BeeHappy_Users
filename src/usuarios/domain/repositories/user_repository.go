@@ -7,4 +7,6 @@ import (
 type UserRepository interface {
 	CreateUser(user *entities.User) error
 	GetUserByUsuario(usuario string) (*entities.User, error)
+	GetUserByEmail(email string) (*entities.User, error) // NUEVO
+	UpdatePassword(usuario, newPassword string) error  
 }

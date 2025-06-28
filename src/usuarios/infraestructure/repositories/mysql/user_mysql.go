@@ -1,3 +1,4 @@
+// src/usuarios/infraestructure/repositories/mysql/user_mysql.go (ACTUALIZADO)
 package mysql
 
 import (
@@ -50,7 +51,6 @@ func (mysql *MySql) CreateUser(data *entities.User) error {
     return nil
 }
 
-
 func (mysql *MySql) GetUserByUsuario(usuario string) (*entities.User, error) {
 	query := `SELECT usuario, contrasena, nombres, apellidos, correo_electronico, rol, estado, fecha_registro FROM usuarios WHERE usuario = ?`
 	row := mysql.conn.DB.QueryRow(query, usuario)
@@ -62,4 +62,29 @@ func (mysql *MySql) GetUserByUsuario(usuario string) (*entities.User, error) {
 		return nil, err
 	}
 	return &user, nil
+}
+
+// NUEVO: Obtener usuario por email
+func (mysql *MySql) GetUserByEmail(email string) (*entities.User, error) {
+	query := `SELECT usuario, contrasena, nombres, apellidos, correo_electronico, rol, estado, fecha_registro FROM usuarios WHERE correo_electronico = ?`
+	row := mysql.conn.DB.QueryRow(query, email)
+
+	var user entities.User
+	err := row.Scan(&user.Usuario, &user.Contrasena, &user.Nombres, &user.Apellidos, &user.Correo_electronico, &user.Rol, &user.Estado, &user.Fecha_registro)
+	if err != nil {
+		log.Println("Error obteniendo el usuario por email:", err)
+		return nil, err
+	}
+	return &user, nil
+}
+
+// NUEVO: Actualizar contraseña
+func (mysql *MySql) UpdatePassword(usuario, newPassword string) error {
+	query := `UPDATE usuarios SET contrasena = ? WHERE usuario = ?`
+	_, err := mysql.conn.ExecutePreparedQuery(query, newPassword, usuario)
+	if err != nil {
+		log.Println("Error actualizando la contraseña:", err)
+		return err
+	}
+	return nil
 }
