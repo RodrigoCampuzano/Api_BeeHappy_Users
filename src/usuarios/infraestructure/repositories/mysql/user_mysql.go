@@ -1,3 +1,4 @@
+// src/usuarios/infraestructure/repositories/mysql/user_mysql.go (ACTUALIZADO)
 package mysql
 
 import (
@@ -58,7 +59,7 @@ func (mysql *MySql) GetUserByUsuario(usuario string) (*entities.User, error) {
 	row := mysql.conn.DB.QueryRow(query, usuario)
 
 	var user entities.User
-	err := row.Scan(&user.Usuario, &user.Contrasena, &user.Nombres, &user.Apellidos, 
+	err := row.Scan(&user.Usuario, &user.Contrasena, &user.Nombres, &user.Apellidos,
 		&user.Correo_electronico, &user.Rol, &user.Estado, &user.Fecha_registro,
 		&user.TwoFactorSecret, &user.TwoFactorEnabled)
 	if err != nil {

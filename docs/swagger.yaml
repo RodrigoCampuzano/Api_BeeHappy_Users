@@ -1,0 +1,56 @@
+info:
+  contact: {}
+paths:
+  /usuarios:
+    post:
+      consumes:
+      - application/json
+      description: Crea un nuevo usuario
+      parameters:
+      - description: Datos del usuario
+        in: body
+        name: user
+        required: true
+        schema:
+          type: object
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            type: object
+      summary: Crear usuario
+      tags:
+      - usuarios
+  /usuarios/login:
+    post:
+      consumes:
+      - application/json
+      description: Inicia sesión de usuario
+      parameters:
+      - description: Credenciales
+        in: body
+        name: credentials
+        required: true
+        schema:
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            type: object
+      summary: Login usuario
+      tags:
+      - usuarios
+swagger: "2.0"
