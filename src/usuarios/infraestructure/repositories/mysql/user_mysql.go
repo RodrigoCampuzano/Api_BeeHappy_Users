@@ -1,3 +1,4 @@
+// src/usuarios/infraestructure/repositories/mysql/user_mysql.go (ACTUALIZADO)
 package mysql
 
 import (
@@ -26,20 +27,20 @@ func NewMySql() *MySql {
 }
 
 func (mysql *MySql) CreateUser(data *entities.User) error {
-    godotenv.Load()
-    secret := os.Getenv("JWT_SECRET")
-    if secret == "" {
-        log.Println("JWT_SECRET no definido")
-        return fmt.Errorf("JWT_SECRET no definido")
-    }
+	godotenv.Load()
+	secret := os.Getenv("JWT_SECRET")
+	if secret == "" {
+		log.Println("JWT_SECRET no definido")
+		return fmt.Errorf("JWT_SECRET no definido")
+	}
 
-	 passwordHasheada := auth.HashPasswordWithSecret(data.Contrasena, secret)
-    hashedPassword, err := bcrypt.GenerateFromPassword([]byte(passwordHasheada), bcrypt.DefaultCost)
-    if err != nil {
-        log.Println("Error encriptando la contraseña:", err)
-        return err
-    }
-    data.Contrasena = string(hashedPassword)
+	passwordHasheada := auth.HashPasswordWithSecret(data.Contrasena, secret)
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(passwordHasheada), bcrypt.DefaultCost)
+	if err != nil {
+		log.Println("Error encriptando la contraseña:", err)
+		return err
+	}
+	data.Contrasena = string(hashedPassword)
 
 	// Establecer valores por defecto
 	if data.Estado == "" {

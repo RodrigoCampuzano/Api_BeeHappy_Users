@@ -1,3 +1,4 @@
+// src/usuarios/infraestructure/controllers/UserController.go (ACTUALIZADO)
 package controllers
 
 import (
@@ -43,8 +44,9 @@ func NewUserController(
 // @Success     200 {object} entities.SwaggerCreateUserResponse
 // @Failure     400 {object} entities.SwaggerErrorResponse
 // @Router      /users [post]
+
 func (uc *UserController) CreateUser(ctx *gin.Context) {
-	uc.createUserUseCase.SaveUser(ctx)
+	uc.createUserHandler.SaveUser(ctx)
 }
 
 // @Summary     Iniciar sesión

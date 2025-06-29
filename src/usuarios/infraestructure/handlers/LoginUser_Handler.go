@@ -1,3 +1,4 @@
+// src/usuarios/infraestructure/handlers/LoginUser_Handler.go (ACTUALIZADO)
 package handlers
 
 import (
@@ -27,6 +28,17 @@ type VerifyLoginRequest struct {
 	Code  string `json:"code"`
 }
 
+// Login godoc
+// @Summary Iniciar sesión
+// @Description Autenticar usuario con contraseña y opcionalmente token 2FA
+// @Tags Autenticación
+// @Accept json
+// @Produce json
+// @Param request body entities.LoginRequest true "Credenciales de login"
+// @Success 200 {object} entities.LoginResponse
+// @Failure 400 {object} entities.ErrorResponse
+// @Failure 401 {object} entities.ErrorResponse
+// @Router /users/login [post]
 func (h *LoginUserHandler) Login(ctx *gin.Context) {
 	var req LoginRequest
 	if err := ctx.ShouldBindJSON(&req); err != nil {

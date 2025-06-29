@@ -2,6 +2,7 @@
 package main
 
 import (
+	"apiusuarios/docs"
 	"apiusuarios/src/core/middleware"
 	"apiusuarios/src/usuarios/infraestructure"
 	"log"
@@ -9,6 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
+
 
 	_ "apiusuarios/docs" // Importa los docs generados
 )
@@ -35,11 +37,11 @@ import (
 // @description Introduce el token con el formato: Bearer <token>
 
 func main() {
+
 	r := gin.Default()
 
 	// Middleware CORS
 	r.Use(middleware.MiddlewareCORS())
-
 	// Configuración de Swagger
 	config := &ginSwagger.Config{
 		URL:                      "http://localhost:8080/swagger/doc.json", // La URL donde se sirve el JSON de Swagger

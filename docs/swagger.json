@@ -24,6 +24,7 @@
         "/users": {
             "post": {
                 "description": "Crea un nuevo usuario en el sistema",
+
                 "consumes": [
                     "application/json"
                 ],
@@ -355,6 +356,7 @@
                         "required": true,
                         "schema": {
                             "$ref": "#/definitions/entities.SwaggerChangePasswordRequest"
+
                         }
                     }
                 ],
@@ -369,6 +371,7 @@
                         "description": "Bad Request",
                         "schema": {
                             "$ref": "#/definitions/entities.SwaggerErrorResponse"
+              "type": "object"
                         }
                     },
                     "401": {
