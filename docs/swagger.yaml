@@ -1,0 +1,411 @@
+basePath: /api/v1
+definitions:
+  entities.SwaggerChangePasswordRequest:
+    properties:
+      current_password:
+        example: ContraseñaActual123
+        type: string
+    type: object
+  entities.SwaggerChangePasswordResponse:
+    properties:
+      message:
+        example: Código de verificación enviado
+        type: string
+    type: object
+  entities.SwaggerCreateUserRequest:
+    properties:
+      apellidos:
+        description: Apellidos del usuario
+        example: Martínez García
+        type: string
+      contrasena:
+        description: Contraseña (mínimo 8 caracteres, debe incluir mayúsculas, minúsculas
+          y números)
+        example: Abc123*
+        type: string
+      correo_electronico:
+        description: Correo electrónico
+        example: rodrigo.martinez@empresa.com
+        type: string
+      nombres:
+        description: Nombres del usuario
+        example: Rodrigo Antonio
+        type: string
+      rol:
+        description: Rol del usuario (administrador, apicultor, tecnico)
+        enum:
+        - administrador
+        - apicultor
+        - tecnico
+        example: apicultor
+        type: string
+      usuario:
+        description: Nombre de usuario (sin espacios, solo letras, números y puntos)
+        example: rodrigo.martinez
+        type: string
+    type: object
+  entities.SwaggerCreateUserResponse:
+    properties:
+      message:
+        description: Mensaje informativo
+        example: Usuario creado exitosamente. Se ha enviado un correo de bienvenida.
+        type: string
+    type: object
+  entities.SwaggerErrorResponse:
+    properties:
+      error:
+        description: Mensaje de error
+        example: Credenciales inválidas. Por favor, verifique su usuario y contraseña
+        type: string
+    type: object
+  entities.SwaggerLoginRequest:
+    properties:
+      contrasena:
+        description: Contraseña del usuario
+        example: Abc123*
+        type: string
+      usuario:
+        description: Usuario o correo electrónico
+        example: rodrigo.martinez
+        type: string
+    type: object
+  entities.SwaggerLoginResponse:
+    properties:
+      email:
+        description: Correo electrónico del usuario (solo si se requiere verificación
+          en dos pasos)
+        example: rodrigo.martinez@empresa.com
+        type: string
+      message:
+        description: Mensaje informativo
+        example: Se ha enviado un código de verificación a su correo electrónico
+        type: string
+      require_two_factor:
+        description: Indica si se requiere verificación en dos pasos
+        example: true
+        type: boolean
+      token:
+        description: Token JWT si la autenticación es exitosa
+        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTE0Mzc2NDEsInJvbCI6ImFkbWluaXN0cmFkb3IiLCJ1c3VhcmlvIjoiUm9kcmlnbyJ9.-kQtpw4rfS5xFd9ZDvpGIHJw2ppvCgqIedWjCK-JZUs
+        type: string
+    type: object
+  entities.SwaggerPasswordResetRequest:
+    properties:
+      email:
+        example: rodrigo.martinez@empresa.com
+        type: string
+    type: object
+  entities.SwaggerPasswordResetResponse:
+    properties:
+      message:
+        example: Se ha enviado un código de verificación a su correo electrónico
+        type: string
+    type: object
+  entities.SwaggerResetPasswordRequest:
+    properties:
+      code:
+        example: "847291"
+        type: string
+      email:
+        example: rodrigo.martinez@empresa.com
+        type: string
+      new_password:
+        example: NuevaContraseña123*
+        type: string
+    type: object
+  entities.SwaggerResetPasswordResponse:
+    properties:
+      message:
+        example: Contraseña actualizada exitosamente
+        type: string
+    type: object
+  entities.SwaggerToggleTwoFactorRequest:
+    properties:
+      estado:
+        description: Estado de la verificación en dos pasos
+        example: true
+        type: boolean
+    type: object
+  entities.SwaggerToggleTwoFactorResponse:
+    properties:
+      message:
+        description: Mensaje informativo
+        example: La verificación en dos pasos ha sido activada exitosamente
+        type: string
+    type: object
+  entities.SwaggerVerifyCodeRequest:
+    properties:
+      code:
+        description: Código de verificación de 6 dígitos
+        example: "847291"
+        type: string
+      email:
+        description: Correo electrónico del usuario
+        example: rodrigo.martinez@empresa.com
+        type: string
+    type: object
+  entities.SwaggerVerifyCodeResponse:
+    properties:
+      message:
+        description: Mensaje informativo
+        example: Código verificado correctamente. Sesión iniciada.
+        type: string
+      token:
+        description: Token JWT si la verificación es exitosa
+        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTE0Mzc2NDEsInJvbCI6ImFkbWluaXN0cmFkb3IiLCJ1c3VhcmlvIjoiUm9kcmlnbyJ9.-kQtpw4rfS5xFd9ZDvpGIHJw2ppvCgqIedWjCK-JZUs
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: API para gestión de usuarios con autenticación en dos pasos y recuperación
+    de contraseña.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: API de Usuarios
+  version: "1.0"
+paths:
+  /users:
+    post:
+      consumes:
+      - application/json
+      description: Crea un nuevo usuario en el sistema
+      parameters:
+      - description: Datos del usuario
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/entities.SwaggerCreateUserRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.SwaggerCreateUserResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entities.SwaggerErrorResponse'
+      summary: Crear nuevo usuario
+      tags:
+      - usuarios
+  /users/login:
+    post:
+      consumes:
+      - application/json
+      description: Inicia sesión con usuario y contraseña
+      parameters:
+      - description: Credenciales
+        in: body
+        name: credentials
+        required: true
+        schema:
+          $ref: '#/definitions/entities.SwaggerLoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.SwaggerLoginResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/entities.SwaggerErrorResponse'
+      summary: Iniciar sesión
+      tags:
+      - autenticación
+  /users/login/verify:
+    post:
+      consumes:
+      - application/json
+      description: Verifica el código de autenticación en dos pasos
+      parameters:
+      - description: Datos de verificación
+        in: body
+        name: verification
+        required: true
+        schema:
+          $ref: '#/definitions/entities.SwaggerVerifyCodeRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.SwaggerVerifyCodeResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/entities.SwaggerErrorResponse'
+      summary: Verificar código de dos pasos
+      tags:
+      - autenticación
+  /users/password/reset:
+    post:
+      consumes:
+      - application/json
+      description: Restablece la contraseña usando el código de verificación
+      parameters:
+      - description: Datos de restablecimiento
+        in: body
+        name: reset
+        required: true
+        schema:
+          $ref: '#/definitions/entities.SwaggerResetPasswordRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.SwaggerResetPasswordResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entities.SwaggerErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/entities.SwaggerErrorResponse'
+      summary: Restablecer contraseña
+      tags:
+      - contraseña
+  /users/password/reset/request:
+    post:
+      consumes:
+      - application/json
+      description: Envía un código de verificación al correo para restablecer la contraseña
+      parameters:
+      - description: Correo electrónico
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/entities.SwaggerPasswordResetRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.SwaggerPasswordResetResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entities.SwaggerErrorResponse'
+      summary: Solicitar restablecimiento de contraseña
+      tags:
+      - contraseña
+  /users/profile/2fa/toggle:
+    post:
+      consumes:
+      - application/json
+      description: Activa o desactiva la verificación en dos pasos para el usuario
+      parameters:
+      - description: Estado de verificación
+        in: body
+        name: toggle
+        required: true
+        schema:
+          $ref: '#/definitions/entities.SwaggerToggleTwoFactorRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.SwaggerToggleTwoFactorResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entities.SwaggerErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/entities.SwaggerErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Activar/desactivar verificación en dos pasos
+      tags:
+      - seguridad
+  /users/profile/password/change:
+    post:
+      consumes:
+      - application/json
+      description: Cambia la contraseña usando el código de verificación
+      parameters:
+      - description: Datos de cambio
+        in: body
+        name: change
+        required: true
+        schema:
+          $ref: '#/definitions/entities.SwaggerResetPasswordRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.SwaggerResetPasswordResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entities.SwaggerErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/entities.SwaggerErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Cambiar contraseña
+      tags:
+      - contraseña
+  /users/profile/password/change/request:
+    post:
+      consumes:
+      - application/json
+      description: Envía un código de verificación para cambiar la contraseña
+      parameters:
+      - description: Datos de cambio
+        in: body
+        name: change
+        required: true
+        schema:
+          $ref: '#/definitions/entities.SwaggerChangePasswordRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.SwaggerChangePasswordResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entities.SwaggerErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/entities.SwaggerErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Solicitar cambio de contraseña
+      tags:
+      - contraseña
+schemes:
+- http
+securityDefinitions:
+  ApiKeyAuth:
+    description: 'Introduce el token con el formato: Bearer <token>'
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
