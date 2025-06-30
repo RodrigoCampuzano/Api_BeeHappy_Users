@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/joho/godotenv"
 )
@@ -25,7 +26,6 @@ func GetDBPool() *Conn_MySQL {
 	dbUser := os.Getenv("DB_USER")
 	dbPass := os.Getenv("DB_PASS")
 	dbSchema := os.Getenv("DB_NAME")
-
 
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:3306)/%s", dbUser, dbPass, dbHost, dbSchema)
 
